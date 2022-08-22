@@ -1,0 +1,30 @@
+.item-sort{
+    display:flex;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.432);
+    padding:20px 0;
+    cursor:pointer
+}
+.item-sort:hover{
+    background-color: rgba(128, 128, 128, 0.1);
+}
+.wrp-item-sort{
+    display:flex;
+}
+.list-item-sort{
+    list-style-type: none;
+}
+.card-sort{
+    position: absolute;
+    bottom: -23rem;
+    background-color: white;
+    padding: 10px;
+    width: 15rem;
+    border: 1px solid #8080809c;
+    border-radius: 10px;
+}
+ul.chd-card-sort.list-card-sort {
+    padding: 0;
+}
+.item-sort img{
+    margin-right:20px;
+}

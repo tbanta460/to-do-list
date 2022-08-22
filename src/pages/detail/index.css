@@ -1,0 +1,61 @@
+.ctn-detail{
+    height:100vh;
+}
+.nw-actv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nw-actv .title{
+    margin:0 50px
+}
+.arrow {
+  border: solid black;
+  border-width: 0 4px 4px 0;
+  display: inline-block;
+  padding: 5px;
+  height:1px;
+}
+
+
+.arrow {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+.edit-icn{
+    background-image: url('https://ivan-todo-devrank.netlify.app/static/media/icon-edit-h.c48dd33a.svg');
+    width: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    height:20px;
+}
+
+.arrow,.edit-icn, .button-sort, .btn-add{
+    cursor:pointer
+}
+
+/* header */
+.bt-detail{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    position:relative;
+}
+.todo-header{
+    display:flex;
+    justify-content: space-between;
+    margin-top:40px;
+}
+.btn-sort{
+    margin-right:20px;
+}
+.chd-header{
+    margin-top:50px;
+}
+.title-inpt-vle{
+    border:0;
+    outline: none;
+    border-bottom: 1px solid black;
+    background-color: rgba(255, 255, 255, 0);
+    width:15rem;
+}
