@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { postAndEditToDo } from '../../../config/api';
+import { postToDo, editToDo } from '../../../config/api';
 import './index.css'
-const PopUpAddItem = ({setswActived,showModal,dataEdit,dataId, myEdit = false,...rest}) => {
+const PopUpAddItem = ({showModal,dataEdit,dataId, isEdit = false,...rest}) => {
     const [showList, setShowList] = useState(false);
     const [textList, setTextList] = useState("Very High");
     const [colorList, setColorList] = useState("dotss-red");
@@ -16,7 +16,7 @@ const PopUpAddItem = ({setswActived,showModal,dataEdit,dataId, myEdit = false,..
         })
     }
     useEffect(() => {
-        dataEdit.length !== 0 && myEdit && setInptValue({title: dataEdit[0].title})
+        dataEdit.length !== 0 && isEdit && setInptValue({title: dataEdit[0].title})
     },[dataEdit])
     const handleChangeEvent = (e) => {
         setInptValue(prev => {
@@ -27,56 +27,34 @@ const PopUpAddItem = ({setswActived,showModal,dataEdit,dataId, myEdit = false,..
         })
     }
     const handleSimpan = async () => {
-        // console.log(dataEdit[0].id, "wowiowiowi")
         let newObj = {}
-        if(myEdit === false){
-            if(textList === "Very High"){
-                newObj["priority"] = "very-high"
-            }else if(textList === "High"){
-                newObj["priority"] = "high"
-            }else if(textList === "Medium"){
-                newObj["priority"] = "normal"
-            }else if(textList === "Low"){
-                newObj["priority"] = "low"
-            }else if(textList === "Very Low"){
-                newObj["priority"] = "very-low"
-            }
+        if(textList === "Very High"){
+            newObj["priority"] = "very-high"
+        }else if(textList === "High"){
+            newObj["priority"] = "high"
+        }else if(textList === "Medium"){
+            newObj["priority"] = "normal"
+        }else if(textList === "Low"){
+            newObj["priority"] = "low"
+        }else if(textList === "Very Low"){
+            newObj["priority"] = "very-low"
+        }
+
+        if(isEdit === false){
+            
             newObj["title"] = inptValue.title
             newObj["activity_group_id"] = parseInt(dataId)
-            fetch('https://floating-mountain-35184.herokuapp.com/todo-items', {
-                method: 'POST',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newObj)
-            })
-            .then(rres => rres.json())
-            .then(data => {
+            const result = await postToDo(newObj)
+            if(result.status.toUpperCase() === "SUCCESS"){
                 window.location.reload()
-            })
-        }else {
-            if(textList === "Very High"){
-                newObj["priority"] = "very-high"
-            }else if(textList === "High"){
-                newObj["priority"] = "high"
-            }else if(textList === "Medium"){
-                newObj["priority"] = "normal"
-            }else if(textList === "Low"){
-                newObj["priority"] = "low"
-            }else if(textList === "Very Low"){
-                newObj["priority"] = "very-low"
             }
+        }else {
+            
             newObj["title"] = inptValue.title
-            newObj["is_active"] = setswActived
-            fetch(`https://floating-mountain-35184.herokuapp.com/todo-items/${dataEdit[0].id}`, {
-                method: 'PATCH',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newObj)
-            })
-            .then(rres => rres.json())
-            .then(data => window.location.reload())
+            const result = await editToDo(newObj, dataEdit[0].id)
+            if(result.status.toUpperCase() === "SUCCESS"){
+                window.location.reload()
+            }
         }
        
     }

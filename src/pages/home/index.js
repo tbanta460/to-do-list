@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import './index.css';
-import { getAndDelActivity } from '../../config/api';
+import { getActivity, delActivity } from '../../config/api';
 const Home = () => {
     const [datas, setDatas] = useState([]);
     const namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
@@ -10,29 +10,31 @@ const Home = () => {
        
         const getDataActivity = async () => {
             
-            let count = 1200
-            const resData = await getAndDelActivity("");
-            const filterData = resData.data.filter((data, index) => index >= count) 
+            let filterData
+            const resData = await getActivity(""); 
+            const lengthData = resData.data.length;
+            filterData = resData.data
+            if(lengthData > 500) {
+                const totalFilter = lengthData - 500
+                filterData = resData.data.filter((d,i) => i > totalFilter)
+            }
             let result = filterData.sort((a,b) => b.created_at.localeCompare(a.created_at));
             setDatas(result)
         }
 
         datas.length === 0 && getDataActivity()
-    }, [datas])
+    }, [])
 
     const handleClickEvent = (data) => {
         
     }
-    const handleDelt = (d) => {
-        
-        fetch(`https://floating-mountain-35184.herokuapp.com/activity-groups/${parseInt(d.id)}`, {
-            method: "DELETE",
-            headers:{
-                "Content-Type": "aplication/json"
-            }
-        })
-        .then(data => data.json())
-        .then(da => console.log(da))
+    const handleDelt = async (d) => {
+        const res = await delActivity(parseInt(d.id));
+        if(res.status.toUpperCase() === "SUCCESS"){
+            window.location.reload()
+        }else{
+            alert('Terjadi Kesalahan Pada Server')
+        }
     }
     return(
         <>
